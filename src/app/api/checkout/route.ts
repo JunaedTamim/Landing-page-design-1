@@ -3,6 +3,8 @@ import { db } from "@/db";
 import { orders } from "@/db/schema";
 import { COUPONS, PLANS, type PlanId } from "@/lib/product";
 
+export const dynamic = "force-dynamic";
+
 const VAT_COUNTRIES = new Set([
   "GB", "DE", "FR", "NL", "ES", "IT", "PT", "IE", "BE", "AT", "SE", "PL",
 ]);
@@ -47,6 +49,15 @@ export async function POST(request: Request) {
   const subtotal = plan.price - discount;
   const vat = VAT_COUNTRIES.has(country) ? subtotal * 0.2 : 0;
   const amountCents = Math.round((subtotal + vat) * 100);
+
+  if (!process.env.DATABASE_URL) {
+    const demoId = Math.random().toString(36).slice(2, 10).toUpperCase();
+    return NextResponse.json({
+      ok: true,
+      reference: `SS-${demoId}`,
+      amountCents,
+    });
+  }
 
   try {
     const [order] = await db
