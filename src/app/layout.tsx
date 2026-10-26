@@ -15,7 +15,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "The Design Practice — Contracts, proposals & pricing for designers",
+  title: "Form & Folio — Contracts, proposals & pricing for designers",
   description:
     "The business toolkit trusted by 4,800+ independent designers. Lawyer-reviewed contracts, a proposal system that closes, and pricing frameworks that hold.",
 };

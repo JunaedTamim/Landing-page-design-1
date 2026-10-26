@@ -117,3 +117,18 @@ select,
 textarea {
   font-size: 16px; /* prevents iOS zoom */
 }
+/* User-selectable dark appearance, applied through the root data attribute. */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --color-paper: #111713;
+  --color-cream: #1c261f;
+  --color-ink: #edf2eb;
+  --color-ink-soft: #b7c4b9;
+  --color-pine: #7bb493;
+  --color-pine-deep: #0c241a;
+  --color-moss: #28372e;
+  --color-citron: #dcec7a;
+  --color-line: #35433a;
+}
+html[data-theme="dark"] body { background-color: var(--color-paper); color: var(--color-ink); }
+html[data-theme="dark"] .bg-white\/70 { background-color: #1b241e; }

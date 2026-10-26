@@ -23,6 +23,9 @@ import Reveal from "@/components/Reveal";
 import Faq from "@/components/Faq";
 import BuyBar from "@/components/BuyBar";
 import { KIT_ITEMS, PLANS, TESTIMONIALS, formatUSD } from "@/lib/product";
+import { getSiteContent } from "@/lib/site-content";
+import LocalizedHero from "@/components/LocalizedHero";
+import LanguageText from "@/components/LanguageText";
 
 const ICONS: Record<string, LucideIcon> = {
   FileSignature,
@@ -44,10 +47,13 @@ const STUDIOS = [
   "Wolff Olins",
 ];
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const content = await getSiteContent();
   return (
     <>
-      <SiteNav />
+      <SiteNav brand={content.brand} />
       <main>
         {/* ————— HERO ————— */}
         <section className="relative overflow-hidden pt-[132px] sm:pt-[148px]">
@@ -64,17 +70,7 @@ export default function Home() {
                 </p>
               </Reveal>
               <Reveal delay={80}>
-                <h1 className="mt-6 font-display text-[44px] leading-[1.02] font-medium tracking-tight text-balance sm:text-6xl lg:text-[72px]">
-                  Great design deserves a{" "}
-                  <em className="text-pine italic">real business</em> behind it.
-                </h1>
-              </Reveal>
-              <Reveal delay={160}>
-                <p className="mt-6 max-w-lg text-base leading-relaxed text-ink-soft sm:text-lg">
-                  Contracts that protect you. Proposals that close. Pricing you
-                  can defend. Twelve documents, refined over nine years of
-                  client work — so you never start from a blank page again.
-                </p>
+                <LocalizedHero headline={content.headline} description={content.description} cta={content.cta} headlineBn={content.headlineBn} descriptionBn={content.descriptionBn} ctaBn={content.ctaBn} />
               </Reveal>
               <Reveal delay={240}>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -82,14 +78,14 @@ export default function Home() {
                     href="/checkout?plan=standard"
                     className="group inline-flex items-center justify-center gap-2 rounded-full bg-pine px-7 py-4 text-base font-semibold text-paper transition-all hover:bg-pine-deep hover:shadow-xl hover:shadow-pine/25 active:scale-[0.98]"
                   >
-                    Get the toolkit — $89
+                    <LanguageText english={content.cta} bangla={content.ctaBn} />
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                   <Link
                     href="/#inside"
                     className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 px-7 py-4 text-base font-semibold transition-colors hover:border-ink/40 hover:bg-cream/60"
                   >
-                    See what&apos;s inside
+                    <LanguageText english="See what’s inside" bangla="ভেতরে কী আছে দেখুন" />
                   </Link>
                 </div>
               </Reveal>
@@ -120,8 +116,8 @@ export default function Home() {
                 <div className="overflow-hidden rounded-[20px] border border-ink/10 shadow-[0_32px_64px_-24px_rgba(23,33,27,0.35)]">
                   <SafeImage
                     src="/images/toolkit-hero.png"
-                    alt="The Design Practice toolkit — contract, proposal booklet and pricing cards"
-                    fallbackLabel="The Design Practice Toolkit"
+                    alt="Form & Folio toolkit — contract, proposal booklet and pricing cards"
+                    fallbackLabel="Form & Folio Toolkit"
                     width={1024}
                     height={1024}
                     priority
@@ -305,7 +301,7 @@ export default function Home() {
                   </span>
                   <div>
                     <p className="text-sm font-semibold">
-                      Elena Kovač — creator, The Design Practice
+                      Elena Kovač — creator, Form & Folio
                     </p>
                     <p className="text-xs leading-relaxed text-ink-soft">
                       9 years independent · 140+ client projects · previously
@@ -547,7 +543,7 @@ export default function Home() {
                 href="/checkout?plan=standard"
                 className="group mt-9 inline-flex items-center gap-2 rounded-full bg-citron px-8 py-4 text-base font-bold text-ink transition-all hover:brightness-105 hover:shadow-2xl hover:shadow-citron/20 active:scale-[0.98]"
               >
-                Get the toolkit — $89
+                {content.cta}
                 <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <p className="mt-4 text-xs text-moss/80">
@@ -557,7 +553,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <SiteFooter />
+      <SiteFooter brand={content.brand} />
       <BuyBar />
     </>
   );

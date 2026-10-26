@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 
-export default function SiteFooter() {
+export default function SiteFooter({ brand = "Form & Folio" }: { brand?: string }) {
   return (
     <footer className="border-t border-line bg-cream/60">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <p className="font-display text-xl font-semibold">
-              The Design Practice<span className="text-pine">.</span>
+              {brand}<span className="text-pine">.</span>
             </p>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-soft">
               The business toolkit for independent designers. Made by designers
@@ -70,7 +70,7 @@ export default function SiteFooter() {
           </div>
         </div>
         <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs text-ink-soft sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 The Design Practice. All rights reserved.</p>
+          <p>© 2026 {brand}. All rights reserved.</p>
           <p>Templates are not legal advice. v3.2 · Updated Jan 2026</p>
         </div>
       </div>

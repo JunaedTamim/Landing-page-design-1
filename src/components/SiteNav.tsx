@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import AppearanceControls from "@/components/AppearanceControls";
 
 const LINKS = [
   { href: "/#inside", label: "What's inside" },
@@ -11,15 +12,25 @@ const LINKS = [
   { href: "/#faq", label: "FAQ" },
 ];
 
-export default function SiteNav() {
+export default function SiteNav({ brand = "Form & Folio" }: { brand?: string }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [bn, setBn] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Hydrate persisted browser preference/content and subscribe to UI events.
+  useEffect(() => {
+    const updateLanguage = (event: Event) => setBn((event as CustomEvent<string>).detail === "bn");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setBn(localStorage.getItem("ff-language") === "bn");
+    window.addEventListener("site-language-change", updateLanguage);
+    return () => window.removeEventListener("site-language-change", updateLanguage);
   }, []);
 
   useEffect(() => {
@@ -32,8 +43,7 @@ export default function SiteNav() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="bg-pine-deep px-4 py-2 text-center text-[11px] font-semibold tracking-[0.14em] text-moss uppercase">
-        v3.2 is live — new retainer agreements &amp; AI clause · free for all
-        owners
+        {bn ? "নতুন রিটেইনার চুক্তি ও এআই ধারা — সকল গ্রাহকের জন্য বিনামূল্যে" : "v3.2 is live — new retainer agreements & AI clause · free for all owners"}
       </div>
       <div
         className={`border-b transition-all duration-300 ${
@@ -48,7 +58,7 @@ export default function SiteNav() {
             className="font-display text-lg font-semibold tracking-tight"
             onClick={() => setOpen(false)}
           >
-            The&nbsp;Design&nbsp;Practice<span className="text-pine">.</span>
+            {brand}<span className="text-pine">.</span>
           </Link>
 
           <div className="hidden items-center gap-8 md:flex">
@@ -58,26 +68,27 @@ export default function SiteNav() {
                 href={l.href}
                 className="link-sweep text-sm font-medium text-ink-soft hover:text-ink"
               >
-                {l.label}
+                {bn ? (["কী কী আছে", "প্রিভিউ", "মূল্য", "জিজ্ঞাসা"])[LINKS.indexOf(l)] : l.label}
               </Link>
             ))}
+            <AppearanceControls />
             <Link
               href="/checkout?plan=standard"
               className="group inline-flex items-center gap-1.5 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-paper transition-all hover:bg-pine hover:shadow-lg hover:shadow-pine/20"
             >
-              Get the toolkit
+              {bn ? "টুলকিটটি নিন" : "Get the toolkit"}
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </div>
 
-          <button
+          <div className="flex items-center gap-2 md:hidden"><AppearanceControls /><button
             className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line md:hidden"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          </button></div>
         </nav>
       </div>
 
@@ -98,7 +109,7 @@ export default function SiteNav() {
               className="flex items-center justify-between border-b border-line py-4 font-display text-2xl font-medium"
               style={{ transitionDelay: `${i * 40}ms` }}
             >
-              {l.label}
+              {bn ? (["কী কী আছে", "প্রিভিউ", "মূল্য", "জিজ্ঞাসা"])[LINKS.indexOf(l)] : l.label}
               <ArrowUpRight className="h-5 w-5 text-pine" />
             </Link>
           ))}
@@ -108,7 +119,7 @@ export default function SiteNav() {
           onClick={() => setOpen(false)}
           className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-pine px-6 py-4 text-base font-semibold text-paper active:scale-[0.98]"
         >
-          Get the toolkit — $89
+          {bn ? "টুলকিটটি নিন — $৮৯" : "Get the toolkit — $89"}
         </Link>
         <p className="mt-4 text-center text-xs text-ink-soft">
           Instant download · 30-day money-back guarantee
