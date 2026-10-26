@@ -167,7 +167,7 @@ export default function CheckoutClient() {
   /* ————— SUCCESS ————— */
   if (done) {
     const receipt = [
-      "THE DESIGN PRACTICE — ORDER RECEIPT",
+      "FORM & FOLIO — ORDER RECEIPT",
       `Reference: ${done.reference}`,
       `Name: ${fullName}`,
       `Email: ${email}`,
@@ -252,7 +252,7 @@ export default function CheckoutClient() {
             <ArrowLeft className="h-4 w-4" /> Back
           </Link>
           <Link href="/" className="font-display text-lg font-semibold">
-            The Design Practice<span className="text-pine">.</span>
+            Form & Folio<span className="text-pine">.</span>
           </Link>
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-pine">
             <Lock className="h-3.5 w-3.5" />
