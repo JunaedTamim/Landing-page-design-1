@@ -48,7 +48,7 @@ export default function SiteNav() {
             className="font-display text-lg font-semibold tracking-tight"
             onClick={() => setOpen(false)}
           >
-            Studio&nbsp;Standard<span className="text-pine">.</span>
+            The&nbsp;Design&nbsp;Practice<span className="text-pine">.</span>
           </Link>
 
           <div className="hidden items-center gap-8 md:flex">

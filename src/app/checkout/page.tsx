@@ -3,8 +3,8 @@ import { Suspense } from "react";
 import CheckoutClient from "@/components/CheckoutClient";
 
 export const metadata: Metadata = {
-  title: "Checkout — The Studio Standard",
-  description: "Complete your purchase of The Studio Standard toolkit.",
+  title: "Checkout — The Design Practice",
+  description: "Complete your purchase of The Design Practice toolkit.",
 };
 
 export default function CheckoutPage() {
