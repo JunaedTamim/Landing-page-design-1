@@ -167,7 +167,7 @@ export default function CheckoutClient() {
   /* ————— SUCCESS ————— */
   if (done) {
     const receipt = [
-      "STUDIO STANDARD — ORDER RECEIPT",
+      "THE DESIGN PRACTICE — ORDER RECEIPT",
       `Reference: ${done.reference}`,
       `Name: ${fullName}`,
       `Email: ${email}`,
@@ -211,7 +211,7 @@ export default function CheckoutClient() {
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
               <a
                 href={`data:text/plain;charset=utf-8,${encodeURIComponent(receipt)}`}
-                download={`studio-standard-receipt-${done.reference}.txt`}
+                download={`design-practice-receipt-${done.reference}.txt`}
                 className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-pine px-5 py-3 text-sm font-semibold text-paper transition-colors hover:bg-pine-deep"
               >
                 <Download className="h-4 w-4" /> Download receipt
@@ -252,7 +252,7 @@ export default function CheckoutClient() {
             <ArrowLeft className="h-4 w-4" /> Back
           </Link>
           <Link href="/" className="font-display text-lg font-semibold">
-            Studio Standard<span className="text-pine">.</span>
+            The Design Practice<span className="text-pine">.</span>
           </Link>
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-pine">
             <Lock className="h-3.5 w-3.5" />

@@ -120,8 +120,8 @@ export default function Home() {
                 <div className="overflow-hidden rounded-[20px] border border-ink/10 shadow-[0_32px_64px_-24px_rgba(23,33,27,0.35)]">
                   <SafeImage
                     src="/images/toolkit-hero.png"
-                    alt="The Studio Standard toolkit — contract, proposal booklet and pricing cards"
-                    fallbackLabel="The Studio Standard Toolkit"
+                    alt="The Design Practice toolkit — contract, proposal booklet and pricing cards"
+                    fallbackLabel="The Design Practice Toolkit"
                     width={1024}
                     height={1024}
                     priority
@@ -305,7 +305,7 @@ export default function Home() {
                   </span>
                   <div>
                     <p className="text-sm font-semibold">
-                      Elena Kovač — creator, Studio Standard
+                      Elena Kovač — creator, The Design Practice
                     </p>
                     <p className="text-xs leading-relaxed text-ink-soft">
                       9 years independent · 140+ client projects · previously
