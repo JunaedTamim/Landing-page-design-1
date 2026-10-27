@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { formatTaka } from "@/lib/product";
+import { Text } from "@/components/SiteLanguage";
 
 export default function BuyBar({ price, compareAt }: { price: number; compareAt: number }) {
   const [show, setShow] = useState(false);
@@ -31,9 +32,9 @@ export default function BuyBar({ price, compareAt }: { price: number; compareAt:
     >
       <div className="flex items-center justify-between gap-3 rounded-2xl border border-ink/10 bg-ink/95 px-4 py-3 shadow-2xl shadow-ink/30 backdrop-blur">
         <div className="leading-tight">
-          <p className="text-sm font-semibold text-paper">The Toolkit</p>
+          <p className="text-sm font-semibold text-paper"><Text english="The Toolkit" /></p>
           <p className="text-xs text-moss">
-            <span className="line-through opacity-60">{formatTaka(compareAt)}</span> {formatTaka(price)} · one-time
+            <span className="line-through opacity-60"><Text english={formatTaka(compareAt)} /></span> <Text english={`${formatTaka(price)} · one-time`} />
           </p>
         </div>
         <Link

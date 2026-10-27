@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
+import { Text } from "@/components/SiteLanguage";
 
 
 export default function Faq({ faqs }: { faqs: Array<{ q: string; a: string; qBn: string; aBn: string }> }) {
@@ -19,7 +20,7 @@ export default function Faq({ faqs }: { faqs: Array<{ q: string; a: string; qBn:
               className="group flex w-full items-center justify-between gap-4 py-5 text-left sm:py-6"
             >
               <span className="font-display text-lg font-medium sm:text-xl">
-                {f.q}
+                <Text english={f.q} />
               </span>
               <span
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
@@ -34,7 +35,7 @@ export default function Faq({ faqs }: { faqs: Array<{ q: string; a: string; qBn:
             <div className={`faq-panel ${open ? "open" : ""}`}>
               <div>
                 <p className="max-w-2xl pb-6 text-sm leading-relaxed text-ink-soft sm:text-base">
-                  {f.a}
+                  <Text english={f.a} />
                 </p>
               </div>
             </div>

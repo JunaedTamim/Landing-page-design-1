@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image, { type ImageProps } from "next/image";
+import { useSiteLanguage } from "@/components/SiteLanguage";
 
 interface SafeImageProps extends Omit<ImageProps, "onError"> {
   fallbackLabel?: string;
@@ -15,6 +16,9 @@ export default function SafeImage({
   ...rest
 }: SafeImageProps) {
   const [hasError, setHasError] = useState(false);
+  const { language, translations } = useSiteLanguage();
+  const localizedAlt = language === "bn" ? translations[alt] ?? alt : alt;
+  const localizedFallback = fallbackLabel ? (language === "bn" ? translations[fallbackLabel] ?? fallbackLabel : fallbackLabel) : "Toolkit Preview";
 
   if (hasError) {
     return (
@@ -39,10 +43,10 @@ export default function SafeImage({
           </svg>
         </div>
         <p className="mt-3 font-display text-sm font-semibold text-pine">
-          {fallbackLabel || "Toolkit Preview"}
+          {localizedFallback}
         </p>
         <p className="mt-1 max-w-xs text-xs leading-relaxed text-ink-soft">
-          {alt}
+          {localizedAlt}
         </p>
       </div>
     );
@@ -51,7 +55,7 @@ export default function SafeImage({
   return (
     <Image
       src={src}
-      alt={alt}
+      alt={localizedAlt}
       className={className}
       onError={() => setHasError(true)}
       {...rest}

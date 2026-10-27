@@ -22,6 +22,7 @@ import {
 import { COUPONS, formatTaka, type PlanId } from "@/lib/product";
 import { DEFAULT_CONTENT } from "@/lib/site-content-shared";
 import AppearanceControls from "@/components/AppearanceControls";
+import { Text, useSiteLanguage } from "@/components/SiteLanguage";
 import type { SiteContent } from "@/lib/site-content-shared";
 
 const VAT_COUNTRIES = new Set([
@@ -58,6 +59,7 @@ type Errors = Partial<
 
 export default function CheckoutClient() {
   const params = useSearchParams();
+  const { t } = useSiteLanguage();
   const initialPlan: PlanId =
     params.get("plan") === "complete" ? "complete" : "standard";
 
@@ -173,16 +175,16 @@ export default function CheckoutClient() {
   /* ————— SUCCESS ————— */
   if (done) {
     const receipt = [
-      "FORM & FOLIO — ORDER RECEIPT",
-      `Reference: ${done.reference}`,
-      `Name: ${fullName}`,
-      `Email: ${email}`,
-      `Product: ${plans[plan].name}`,
-      coupon ? `Coupon: ${coupon}` : null,
-      `Total paid: ${money(totals.total)}`,
+      t("FORM & FOLIO — ORDER RECEIPT"),
+      `${t("Reference:")} ${done.reference}`,
+      `${t("Name:")} ${fullName}`,
+      `${t("Email:")} ${email}`,
+      `${t("Product:")} ${plans[plan].name}`,
+      coupon ? `${t("Coupon:")} ${coupon}` : null,
+      `${t("Total paid:")} ${money(totals.total)}`,
       "",
-      "Your download library: https://studiostandard.co/library",
-      "Thank you for supporting independent tools.",
+      `${t("Your download library:")} https://studiostandard.co/library`,
+      t("Thank you for supporting independent tools."),
     ]
       .filter(Boolean)
       .join("\n");
@@ -195,24 +197,24 @@ export default function CheckoutClient() {
             <Check className="h-9 w-9 text-citron" strokeWidth={3} />
           </div>
           <h1 className="mt-7 font-display text-4xl font-medium tracking-tight sm:text-5xl">
-            You&apos;re in.
+            <Text english="You're in." />
           </h1>
           <p className="mt-4 text-base leading-relaxed text-ink-soft">
-            Order{" "}
+            <Text english="Order" />{" "}
             <span className="font-mono font-semibold text-ink">
               {done.reference}
             </span>{" "}
-            is confirmed. A receipt and your permanent library link are on
-            their way to <strong className="text-ink">{email}</strong>.
+            <Text english="is confirmed. A receipt and your permanent library link are on" />{" "}
+            <Text english="their way to" /> <strong className="text-ink">{email}</strong>.
           </p>
           <div className="mt-8 rounded-2xl border border-line bg-cream/60 p-5 text-left">
             <div className="flex items-center justify-between text-sm">
-              <span className="font-semibold">{plans[plan].name}</span>
+              <span className="font-semibold"><Text english={plans[plan].name} /></span>
               <span className="font-semibold">{money(totals.total)}</span>
             </div>
             {coupon && (
               <p className="mt-1 text-xs text-pine">
-                Coupon {coupon} applied — you saved {money(totals.discount)}.
+                <Text english="Coupon" /> {coupon} <Text english="applied — you saved" /> {money(totals.discount)}.
               </p>
             )}
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
@@ -221,20 +223,20 @@ export default function CheckoutClient() {
                 download={`design-practice-receipt-${done.reference}.txt`}
                 className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-pine px-5 py-3 text-sm font-semibold text-paper transition-colors hover:bg-pine-deep"
               >
-                <Download className="h-4 w-4" /> Download receipt
+                <Download className="h-4 w-4" /> <Text english="Download receipt" />
               </a>
               <Link
                 href="/"
                 className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-ink/15 px-5 py-3 text-sm font-semibold transition-colors hover:bg-cream"
               >
-                Back to the site
+                <Text english="Back to the site" />
               </Link>
             </div>
           </div>
           <p className="mt-6 inline-flex items-center gap-2 text-xs text-ink-soft">
             <Mail className="h-3.5 w-3.5" />
-            Nothing in your inbox after 5 minutes? Check spam, then email
-            hello@studiostandard.co
+            <Text english="Nothing in your inbox after 5 minutes? Check spam, then email" />
+            <Text english="hello@studiostandard.co" />
           </p>
         </div>
       </main>
@@ -256,25 +258,25 @@ export default function CheckoutClient() {
             href="/"
             className="inline-flex items-center gap-2 text-sm font-medium text-ink-soft transition-colors hover:text-ink"
           >
-            <ArrowLeft className="h-4 w-4" /> Back
+            <ArrowLeft className="h-4 w-4" /> <Text english="Back" />
           </Link>
           <Link href="/" className="font-display text-lg font-semibold">
             Form & Folio<span className="text-pine">.</span>
           </Link>
           <div className="flex items-center gap-3"><AppearanceControls /><span className="inline-flex items-center gap-1.5 text-xs font-semibold text-pine">
             <Lock className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Secure checkout</span>
-            <span className="sm:hidden">Secure</span>
+            <span className="hidden sm:inline"><Text english="Secure checkout" /></span>
+            <span className="sm:hidden"><Text english="Secure" /></span>
           </span></div>
         </div>
       </header>
 
       <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6 sm:pt-12">
         <h1 className="font-display text-3xl font-medium tracking-tight sm:text-4xl">
-          Checkout
+          <Text english="Checkout" />
         </h1>
         <p className="mt-2 text-sm text-ink-soft">
-          Two minutes now, nine years of awkward emails avoided.
+          <Text english="Two minutes now, nine years of awkward emails avoided." />
         </p>
 
         {/* mobile order summary toggle */}
@@ -285,7 +287,7 @@ export default function CheckoutClient() {
             aria-expanded={summaryOpen}
           >
             <span className="inline-flex items-center gap-2">
-              <Tag className="h-4 w-4 text-pine" /> Order summary
+              <Tag className="h-4 w-4 text-pine" /> <Text english="Order summary" />
               <ChevronDown
                 className={`h-4 w-4 transition-transform ${summaryOpen ? "rotate-180" : ""}`}
               />
@@ -311,7 +313,7 @@ export default function CheckoutClient() {
             {/* plan picker */}
             <fieldset>
               <legend className="text-xs font-bold tracking-[0.14em] text-ink-soft uppercase">
-                1 · Your edition
+                <Text english="1 · Your edition" />
               </legend>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 {(Object.keys(plans) as PlanId[]).map((id) => {
@@ -338,14 +340,14 @@ export default function CheckoutClient() {
                       >
                         {active && <Check className="h-3 w-3" strokeWidth={4} />}
                       </span>
-                      <p className="pr-7 text-sm font-bold">{p.name}</p>
+                      <p className="pr-7 text-sm font-bold"><Text english={p.name} /></p>
                       <p className="mt-1 pr-7 text-xs leading-relaxed text-ink-soft">
-                        {p.tagline}
+                        <Text english={p.tagline} />
                       </p>
                       <p className="mt-3 font-display text-2xl font-medium text-pine">
-                        {formatTaka(p.price)}
+                        <Text english={formatTaka(p.price)} />
                         <span className="ml-2 align-middle text-xs font-sans text-ink-soft line-through">
-                          {formatTaka(p.compareAt!)}
+                          <Text english={formatTaka(p.compareAt!)} />
                         </span>
                       </p>
                     </button>
@@ -357,46 +359,46 @@ export default function CheckoutClient() {
             {/* contact */}
             <fieldset className="mt-10">
               <legend className="text-xs font-bold tracking-[0.14em] text-ink-soft uppercase">
-                2 · Delivery details
+                <Text english="2 · Delivery details" />
               </legend>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 <div>
                   <label htmlFor="fullName" className="mb-1.5 block text-sm font-semibold">
-                    Full name
+                    <Text english="Full name" />
                   </label>
                   <input
                     id="fullName"
                     autoComplete="name"
-                    placeholder="Ada Lindqvist"
+                    placeholder={t("Ada Lindqvist")}
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     className={`${inputBase} ${errors.fullName ? inputBad : inputOk}`}
                   />
                   {errors.fullName && (
-                    <p className="mt-1.5 text-xs font-medium text-red-600">{errors.fullName}</p>
+                    <p className="mt-1.5 text-xs font-medium text-red-600"><Text english={errors.fullName} /></p>
                   )}
                 </div>
                 <div>
                   <label htmlFor="email" className="mb-1.5 block text-sm font-semibold">
-                    Email <span className="font-normal text-ink-soft">(files are sent here)</span>
+                    <Text english="Email" /> <span className="font-normal text-ink-soft">(<Text english="files are sent here" />)</span>
                   </label>
                   <input
                     id="email"
                     type="email"
                     inputMode="email"
                     autoComplete="email"
-                    placeholder="ada@studio.co"
+                    placeholder={t("ada@studio.co")}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className={`${inputBase} ${errors.email ? inputBad : inputOk}`}
                   />
                   {errors.email && (
-                    <p className="mt-1.5 text-xs font-medium text-red-600">{errors.email}</p>
+                    <p className="mt-1.5 text-xs font-medium text-red-600"><Text english={errors.email} /></p>
                   )}
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="country" className="mb-1.5 block text-sm font-semibold">
-                    Country <span className="font-normal text-ink-soft">(for VAT)</span>
+                    <Text english="Country" /> <span className="font-normal text-ink-soft">(<Text english="for VAT" />)</span>
                   </label>
                   <select
                     id="country"
@@ -406,7 +408,7 @@ export default function CheckoutClient() {
                   >
                     {COUNTRIES.map(([code, name]) => (
                       <option key={code} value={code}>
-                        {name}
+                        <Text english={name} />
                       </option>
                     ))}
                   </select>
@@ -417,12 +419,12 @@ export default function CheckoutClient() {
             {/* payment */}
             <fieldset className="mt-10">
               <legend className="text-xs font-bold tracking-[0.14em] text-ink-soft uppercase">
-                3 · Payment
+                <Text english="3 · Payment" />
               </legend>
               <div className="mt-4 rounded-2xl border border-line bg-cream/40 p-4 sm:p-5">
                 <div className="flex items-center justify-between">
                   <p className="inline-flex items-center gap-2 text-sm font-semibold">
-                    <CreditCard className="h-4 w-4 text-pine" /> Card
+                    <CreditCard className="h-4 w-4 text-pine" /> <Text english="Card" />
                   </p>
                   <div className="flex gap-1.5">
                     {["VISA", "MC", "AMEX"].map((b) => (
@@ -438,60 +440,59 @@ export default function CheckoutClient() {
                 <div className="mt-4 grid grid-cols-2 gap-4">
                   <div className="col-span-2">
                     <label htmlFor="card" className="mb-1.5 block text-sm font-semibold">
-                      Card number
+                      <Text english="Card number" />
                     </label>
                     <input
                       id="card"
                       inputMode="numeric"
                       autoComplete="cc-number"
-                      placeholder="4242 4242 4242 4242"
+                      placeholder={t("4242 4242 4242 4242")}
                       value={card}
                       onChange={(e) => setCard(formatCard(e.target.value))}
                       className={`${inputBase} font-mono tracking-wide ${errors.card ? inputBad : inputOk}`}
                     />
                     {errors.card && (
-                      <p className="mt-1.5 text-xs font-medium text-red-600">{errors.card}</p>
+                      <p className="mt-1.5 text-xs font-medium text-red-600"><Text english={errors.card} /></p>
                     )}
                   </div>
                   <div>
                     <label htmlFor="expiry" className="mb-1.5 block text-sm font-semibold">
-                      Expiry
+                      <Text english="Expiry" />
                     </label>
                     <input
                       id="expiry"
                       inputMode="numeric"
                       autoComplete="cc-exp"
-                      placeholder="MM/YY"
+                      placeholder={t("MM/YY")}
                       value={expiry}
                       onChange={(e) => setExpiry(formatExpiry(e.target.value))}
                       className={`${inputBase} font-mono ${errors.expiry ? inputBad : inputOk}`}
                     />
                     {errors.expiry && (
-                      <p className="mt-1.5 text-xs font-medium text-red-600">{errors.expiry}</p>
+                      <p className="mt-1.5 text-xs font-medium text-red-600"><Text english={errors.expiry} /></p>
                     )}
                   </div>
                   <div>
                     <label htmlFor="cvc" className="mb-1.5 block text-sm font-semibold">
-                      CVC
+                      <Text english="CVC" />
                     </label>
                     <input
                       id="cvc"
                       inputMode="numeric"
                       autoComplete="cc-csc"
-                      placeholder="123"
+                      placeholder={t("123")}
                       value={cvc}
                       onChange={(e) => setCvc(e.target.value.replace(/\D/g, "").slice(0, 4))}
                       className={`${inputBase} font-mono ${errors.cvc ? inputBad : inputOk}`}
                     />
                     {errors.cvc && (
-                      <p className="mt-1.5 text-xs font-medium text-red-600">{errors.cvc}</p>
+                      <p className="mt-1.5 text-xs font-medium text-red-600"><Text english={errors.cvc} /></p>
                     )}
                   </div>
                 </div>
                 <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-ink-soft">
                   <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-pine" />
-                  Demo checkout — no real charge is made. Use any 16-digit
-                  number, e.g. 4242 4242 4242 4242.
+                  <Text english="Demo checkout — no real charge is made. Use any 16-digit number, e.g. 4242 4242 4242 4242." />
                 </p>
               </div>
             </fieldset>
@@ -502,22 +503,22 @@ export default function CheckoutClient() {
                 <div className="flex items-center justify-between rounded-xl border border-pine/30 bg-pine/5 px-4 py-3">
                   <p className="inline-flex items-center gap-2 text-sm font-semibold text-pine">
                     <BadgeCheck className="h-4 w-4" />
-                    {coupon} applied — {Math.round(COUPONS[coupon] * 100)}% off
+                    <Text english={`${coupon} applied — ${Math.round(COUPONS[coupon] * 100)}% off`} />
                   </p>
                   <button
                     type="button"
                     onClick={() => setCoupon(null)}
                     className="inline-flex items-center gap-1 text-xs font-semibold text-ink-soft hover:text-ink"
                   >
-                    <X className="h-3.5 w-3.5" /> Remove
+                    <X className="h-3.5 w-3.5" /> <Text english="Remove" />
                   </button>
                 </div>
               ) : (
                 <div>
                   <div className="flex gap-2">
                     <input
-                      aria-label="Discount code"
-                      placeholder="Discount code (try STUDIO20)"
+                      aria-label={t("Discount code")}
+                      placeholder={t("Discount code (try STUDIO20)")}
                       value={couponInput}
                       onChange={(e) => {
                         setCouponInput(e.target.value);
@@ -536,11 +537,11 @@ export default function CheckoutClient() {
                       onClick={applyCoupon}
                       className="shrink-0 rounded-xl border border-ink/20 px-5 text-sm font-semibold transition-colors hover:bg-ink hover:text-paper"
                     >
-                      Apply
+                      <Text english="Apply" />
                     </button>
                   </div>
                   {couponError && (
-                    <p className="mt-1.5 text-xs font-medium text-red-600">{couponError}</p>
+                    <p className="mt-1.5 text-xs font-medium text-red-600"><Text english={couponError} /></p>
                   )}
                 </div>
               )}
@@ -548,7 +549,7 @@ export default function CheckoutClient() {
 
             {serverError && (
               <div className="mt-6 rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
-                {serverError}
+                <Text english={serverError} />
               </div>
             )}
 
@@ -559,18 +560,16 @@ export default function CheckoutClient() {
             >
               {processing ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" /> Processing
-                  payment…
+                  <Loader2 className="h-5 w-5 animate-spin" /> <Text english="Processing payment…" />
                 </>
               ) : (
                 <>
-                  <Lock className="h-4 w-4" /> Pay {money(totals.total)}
+                  <Lock className="h-4 w-4" /> <Text english="Pay" /> {money(totals.total)}
                 </>
               )}
             </button>
             <p className="mt-3 text-center text-xs text-ink-soft">
-              By purchasing you agree to the license terms. One-time payment —
-              no subscription, ever.
+              <Text english="By purchasing you agree to the license terms. One-time payment — no subscription, ever." />
             </p>
 
             <div className="mt-8 grid grid-cols-3 gap-3 border-t border-line pt-6">
@@ -587,7 +586,7 @@ export default function CheckoutClient() {
                   >
                     <I className="h-4 w-4 text-pine" />
                     <span className="text-[11px] font-semibold text-ink-soft">
-                      {label as string}
+                      <Text english={label as string} />
                     </span>
                   </div>
                 );
@@ -599,16 +598,16 @@ export default function CheckoutClient() {
           <aside className="order-1 hidden lg:order-2 lg:block">
             <div className="sticky top-8 rounded-[20px] border border-line bg-cream/60 p-6">
               <p className="text-xs font-bold tracking-[0.14em] text-ink-soft uppercase">
-                Order summary
+                <Text english="Order summary" />
               </p>
               <div className="mt-4 flex items-center gap-3 rounded-xl border border-line bg-paper p-3">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-pine-deep font-display text-sm font-semibold text-citron">
                   SS
                 </span>
                 <div>
-                  <p className="text-sm font-bold">{plans[plan].name}</p>
+                  <p className="text-sm font-bold"><Text english={plans[plan].name} /></p>
                   <p className="text-xs text-ink-soft">
-                    Digital download · v3.2 · lifetime updates
+                    <Text english="Digital download · v3.2 · lifetime updates" />
                   </p>
                 </div>
               </div>
@@ -622,9 +621,7 @@ export default function CheckoutClient() {
                 />
               </div>
               <div className="mt-5 rounded-xl bg-pine/5 p-3.5 text-xs leading-relaxed text-ink-soft">
-                <strong className="text-pine">The guarantee:</strong> if the
-                toolkit doesn&apos;t earn its price back on your next project,
-                email us within 30 days for a full refund. Keep the files.
+                <strong className="text-pine"><Text english="The guarantee:" /></strong> <Text english="if the toolkit doesn't earn its price back on your next project, email us within 30 days for a full refund. Keep the files." />
               </div>
             </div>
           </aside>
@@ -650,13 +647,13 @@ function SummaryLines({
   return (
     <dl className="space-y-2.5 text-sm">
       <div className="flex justify-between">
-        <dt className="text-ink-soft">{plans[plan].name}</dt>
+        <dt className="text-ink-soft"><Text english={plans[plan].name} /></dt>
         <dd className="font-medium">{money(totals.base)}</dd>
       </div>
       {coupon && (
         <div className="flex justify-between text-pine">
           <dt className="inline-flex items-center gap-1.5">
-            {coupon} (−{Math.round(COUPONS[coupon] * 100)}%)
+            <Text english={`${coupon} (−${Math.round(COUPONS[coupon] * 100)}%)`} />
             <button
               type="button"
               onClick={onRemoveCoupon}
@@ -670,13 +667,13 @@ function SummaryLines({
         </div>
       )}
       <div className="flex justify-between">
-        <dt className="text-ink-soft">VAT {totals.vat > 0 ? "(20%)" : ""}</dt>
+        <dt className="text-ink-soft"><Text english={totals.vat > 0 ? "VAT (20%)" : "VAT"} /></dt>
         <dd className="font-medium">
           {totals.vat > 0 ? money(totals.vat) : "৳0"}
         </dd>
       </div>
       <div className="flex justify-between border-t border-line pt-3">
-        <dt className="font-bold">Total due today</dt>
+        <dt className="font-bold"><Text english="Total due today" /></dt>
         <dd className="font-display text-2xl font-semibold text-pine">
           {money(totals.total)}
         </dd>
