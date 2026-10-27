@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { DEFAULT_CONTENT, type SiteContent } from "@/lib/site-content";
+import { DEFAULT_CONTENT, type SiteContent } from "@/lib/site-content-shared";
 
 export default function AdminEditor() {
   const [content, setContent] = useState<SiteContent>(DEFAULT_CONTENT);
