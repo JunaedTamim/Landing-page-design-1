@@ -25,8 +25,9 @@ import BuyBar from "@/components/BuyBar";
 import { formatTaka } from "@/lib/product";
 import { getSiteContent } from "@/lib/site-content";
 import LocalizedHero from "@/components/LocalizedHero";
-import { TranslationMap } from "@/components/SiteTranslator";
-import { getContentTranslationMap } from "@/lib/site-content-shared";
+import { Text } from "@/components/SiteLanguage";
+
+
 
 const ICONS: Record<string, LucideIcon> = {
   FileSignature,
@@ -43,7 +44,7 @@ export default async function Home() {
   const content = await getSiteContent();
   return (
     <>
-      <TranslationMap dictionary={getContentTranslationMap(content)} /><SiteNav brand={content.brand} announcement={content.announcement} mobileCta={content.cta} />
+      <SiteNav brand={content.brand} announcement={content.announcement} mobileCta={content.cta} />
       <main>
         {/* ————— HERO ————— */}
         <section className="relative overflow-hidden pt-[132px] sm:pt-[148px]">
@@ -56,7 +57,7 @@ export default async function Home() {
               <Reveal>
                 <p className="inline-flex items-center gap-2 rounded-full border border-line bg-cream/70 px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] text-pine uppercase">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-pine" />
-                  {content.pageCopy.designers.en}
+                  <Text english={content.pageCopy.designers.en} />
                 </p>
               </Reveal>
               <Reveal delay={80}>
@@ -68,14 +69,14 @@ export default async function Home() {
                     href="/checkout?plan=standard"
                     className="group inline-flex items-center justify-center gap-2 rounded-full bg-pine px-7 py-4 text-base font-semibold text-paper transition-all hover:bg-pine-deep hover:shadow-xl hover:shadow-pine/25 active:scale-[0.98]"
                   >
-                    {content.cta}
+                    <Text english={content.cta} />
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                   <Link
                     href="/#inside"
                     className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 px-7 py-4 text-base font-semibold transition-colors hover:border-ink/40 hover:bg-cream/60"
                   >
-                    See what’s inside
+                    <Text english="See what’s inside" />
                   </Link>
                 </div>
               </Reveal>
@@ -88,14 +89,13 @@ export default async function Home() {
                       ))}
                     </span>
                     <strong className="font-semibold text-ink">4.9</strong>
-                    (612 reviews)
+                    <Text english="(612 reviews)" />
                   </span>
                   <span className="inline-flex items-center gap-1.5">
-                    <Download className="h-4 w-4 text-pine" /> 4,800+ sold
+                    <Download className="h-4 w-4 text-pine" /> <Text english="4,800+ sold" />
                   </span>
                   <span className="inline-flex items-center gap-1.5">
-                    <RefreshCw className="h-4 w-4 text-pine" /> Free lifetime
-                    updates
+                    <RefreshCw className="h-4 w-4 text-pine" /> <Text english="Free lifetime updates" />
                   </span>
                 </div>
               </Reveal>
@@ -121,11 +121,11 @@ export default async function Home() {
                 </div>
                 <div className="absolute -bottom-5 left-4 animate-float rounded-xl border border-ink/10 bg-paper px-4 py-3 shadow-xl sm:left-8">
                   <p className="text-[11px] font-bold tracking-wide text-ink-soft uppercase">
-                    Proposal #147
+                    <Text english="Proposal #147" />
                   </p>
                   <p className="mt-0.5 inline-flex items-center gap-1.5 text-sm font-semibold">
                     <BadgeCheck className="h-4 w-4 text-pine" />
-                    Signed in 2 days — ৳14,88,000
+                    <Text english="Signed in 2 days — ৳14,88,000" />
                   </p>
                 </div>
               </div>
@@ -141,14 +141,14 @@ export default async function Home() {
                     key={i}
                     className="inline-flex items-center gap-10 text-sm font-semibold whitespace-nowrap text-ink-soft/70"
                   >
-                    {s}
+                    <Text english={s} />
                     <span className="h-1 w-1 rounded-full bg-pine/40" />
                   </span>
                 ))}
               </div>
             </div>
             <p className="mt-2 text-center text-[11px] tracking-[0.16em] text-ink-soft/60 uppercase">
-              {content.pageCopy.socialProof.en}
+              <Text english={content.pageCopy.socialProof.en} />
             </p>
           </div>
         </section>
@@ -166,7 +166,7 @@ export default async function Home() {
                 <p className="font-display text-4xl font-medium text-citron sm:text-5xl">
                   {num}
                 </p>
-                <p className="mt-2 text-sm text-moss/90">{label}</p>
+                <p className="mt-2 text-sm text-moss/90"><Text english={label} /></p>
               </Reveal>
             ))}
           </div>
@@ -179,14 +179,14 @@ export default async function Home() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <p className="text-xs font-bold tracking-[0.16em] text-pine uppercase">
-                    {content.pageCopy.insideEyebrow.en}
+                    <Text english={content.pageCopy.insideEyebrow.en} />
                   </p>
                   <h2 className="mt-3 max-w-xl font-display text-4xl font-medium tracking-tight text-balance sm:text-5xl">
-                    {content.pageCopy.insideTitle.en}
+                    <Text english={content.pageCopy.insideTitle.en} />
                   </h2>
                 </div>
                 <p className="max-w-xs text-sm leading-relaxed text-ink-soft">
-                  {content.pageCopy.insideDesc.en}
+                  <Text english={content.pageCopy.insideDesc.en} />
                 </p>
               </div>
             </Reveal>
@@ -205,19 +205,19 @@ export default async function Home() {
                       </span>
                       <div>
                         <h3 className="font-display text-xl font-medium sm:text-2xl">
-                          {item.title}
+                          <Text english={item.title} />
                         </h3>
                         <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-soft sm:text-[15px]">
-                          {item.desc}
+                          <Text english={item.desc} />
                         </p>
                       </div>
                       <div className="flex flex-wrap gap-1.5 sm:flex-col sm:items-end">
                         {item.formats.map((f) => (
                           <span
-                            key={f}
+key={f}
                             className="rounded-full border border-line px-2.5 py-0.5 text-[11px] font-semibold text-ink-soft"
                           >
-                            {f}
+                            <Text english={f} />
                           </span>
                         ))}
                       </div>
@@ -245,23 +245,23 @@ export default async function Home() {
               </div>
               <div className="absolute -right-2 -bottom-5 rounded-xl border border-ink/10 bg-pine-deep px-4 py-3 text-paper shadow-xl sm:-right-4">
                 <p className="font-display text-lg leading-none font-medium text-citron">
-                  3 options
+                  <Text english="3 options" />
                 </p>
                 <p className="mt-1 text-[11px] text-moss">
-                  on every proposal, by default
+                  <Text english="on every proposal, by default" />
                 </p>
               </div>
             </Reveal>
             <div className="order-1 lg:order-2">
               <Reveal>
                 <p className="text-xs font-bold tracking-[0.16em] text-pine uppercase">
-                  {content.pageCopy.previewEyebrow.en}
+                  <Text english={content.pageCopy.previewEyebrow.en} />
                 </p>
                 <h2 className="mt-3 font-display text-4xl font-medium tracking-tight text-balance sm:text-5xl">
-                  {content.pageCopy.previewTitle.en}
+                  <Text english={content.pageCopy.previewTitle.en} />
                 </h2>
                 <p className="mt-5 max-w-lg text-base leading-relaxed text-ink-soft">
-                  {content.pageCopy.previewDesc.en}
+                  <Text english={content.pageCopy.previewDesc.en} />
                 </p>
               </Reveal>
               <div className="mt-8 space-y-4">
@@ -271,7 +271,7 @@ export default async function Home() {
                       <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-pine text-paper">
                         <Check className="h-3 w-3" strokeWidth={3} />
                       </span>
-                      {line}
+                      <Text english={line} />
                     </p>
                   </Reveal>
                 ))}
@@ -283,10 +283,10 @@ export default async function Home() {
                   </span>
                   <div>
                     <p className="text-sm font-semibold">
-                      {content.pageCopy.creator.en}
+                      <Text english={content.pageCopy.creator.en} />
                     </p>
                     <p className="text-xs leading-relaxed text-ink-soft">
-                      {content.pageCopy.creatorBio.en}
+                      <Text english={content.pageCopy.creatorBio.en} />
                     </p>
                   </div>
                 </div>
@@ -300,10 +300,10 @@ export default async function Home() {
           <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
             <Reveal>
               <p className="text-xs font-bold tracking-[0.16em] text-pine uppercase">
-                {content.pageCopy.reviewsEyebrow?.en ?? "From the field"}
+                <Text english={content.pageCopy.reviewsEyebrow?.en ?? "From the field"} />
               </p>
               <h2 className="mt-3 max-w-2xl font-display text-4xl font-medium tracking-tight text-balance sm:text-5xl">
-                {content.pageCopy.reviewsTitle.en}
+                <Text english={content.pageCopy.reviewsTitle.en} />
               </h2>
             </Reveal>
             <div className="mt-12 grid gap-5 lg:grid-cols-[1.2fr_1fr]">
@@ -313,7 +313,7 @@ export default async function Home() {
                     <div>
                       <Quote className="h-8 w-8 text-citron" />
                       <blockquote className="mt-5 font-display text-xl leading-snug font-medium text-balance sm:text-[26px]">
-                        “{t.quote}”
+                        “<Text english={t.quote} />”
                       </blockquote>
                     </div>
                     <figcaption className="mt-8 flex items-center gap-3">
@@ -322,7 +322,7 @@ export default async function Home() {
                       </span>
                       <div>
                         <p className="text-sm font-semibold">{t.name}</p>
-                        <p className="text-xs text-moss">{t.role}</p>
+                        <p className="text-xs text-moss"><Text english={t.role} /></p>
                       </div>
                     </figcaption>
                   </figure>
@@ -333,7 +333,7 @@ export default async function Home() {
                   <Reveal key={t.name} delay={100 + i * 100}>
                     <figure className="flex h-full flex-col justify-between rounded-[20px] border border-line bg-cream/50 p-6 transition-colors hover:bg-cream sm:p-7">
                       <blockquote className="text-[15px] leading-relaxed text-ink">
-                        “{t.quote}”
+                        “<Text english={t.quote} />”
                       </blockquote>
                       <figcaption className="mt-5 flex items-center gap-3">
                         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-moss font-display text-xs font-semibold text-pine-deep">
@@ -341,7 +341,7 @@ export default async function Home() {
                         </span>
                         <div>
                           <p className="text-sm font-semibold">{t.name}</p>
-                          <p className="text-xs text-ink-soft">{t.role}</p>
+                          <p className="text-xs text-ink-soft"><Text english={t.role} /></p>
                         </div>
                       </figcaption>
                     </figure>
@@ -358,13 +358,13 @@ export default async function Home() {
             <Reveal>
               <div className="max-w-2xl">
                 <p className="text-xs font-bold tracking-[0.16em] text-pine uppercase">
-                  {content.pageCopy.pricingEyebrow.en}
+                  <Text english={content.pageCopy.pricingEyebrow.en} />
                 </p>
                 <h2 className="mt-3 font-display text-4xl font-medium tracking-tight text-balance sm:text-5xl">
-                  {content.pageCopy.pricingTitle.en}
+                  <Text english={content.pageCopy.pricingTitle.en} />
                 </h2>
                 <p className="mt-4 text-base text-ink-soft">
-                  {content.pageCopy.pricingDesc.en}
+                  <Text english={content.pageCopy.pricingDesc.en} />
                 </p>
               </div>
             </Reveal>
@@ -374,23 +374,23 @@ export default async function Home() {
               <Reveal>
                 <div className="relative flex h-full flex-col rounded-[24px] bg-pine-deep p-7 text-paper sm:p-10">
                   <span className="absolute -top-3 left-7 rounded-full bg-citron px-3 py-1 text-[11px] font-bold tracking-wide text-ink uppercase">
-                    Most popular
+                    <Text english="Most popular" />
                   </span>
                   <div className="flex items-baseline justify-between gap-4">
                     <h3 className="font-display text-2xl font-medium">
-                      {content.plans.standard.name}
+                      <Text english={content.plans.standard.name} />
                     </h3>
                     <p className="text-right">
                       <span className="text-sm text-moss line-through">
-                        {formatTaka(content.plans.standard.compareAt!)}
+                        <Text english={formatTaka(content.plans.standard.compareAt!)} />
                       </span>{" "}
                       <span className="font-display text-5xl font-medium text-citron">
-                        {formatTaka(content.plans.standard.price)}
+                        <Text english={formatTaka(content.plans.standard.price)} />
                       </span>
                     </p>
                   </div>
                   <p className="mt-2 text-sm text-moss">
-                    {content.plans.standard.tagline}
+                    <Text english={content.plans.standard.tagline} />
                   </p>
                   <ul className="mt-7 space-y-3">
                     {content.plans.standard.features.map((f) => (
@@ -399,7 +399,7 @@ export default async function Home() {
                           className="mt-0.5 h-4 w-4 shrink-0 text-citron"
                           strokeWidth={3}
                         />
-                        {f}
+                        <Text english={f} />
                       </li>
                     ))}
                   </ul>
@@ -407,11 +407,11 @@ export default async function Home() {
                     href="/checkout?plan=standard"
                     className="group mt-9 inline-flex items-center justify-center gap-2 rounded-full bg-citron px-6 py-4 text-base font-bold text-ink transition-all hover:brightness-105 active:scale-[0.98]"
                   >
-                    Get The Toolkit
+                    <Text english="Get The Toolkit" />
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                   <p className="mt-3 text-center text-xs text-moss/80">
-                    Instant download · 30-day guarantee
+                    <Text english="Instant download · 30-day guarantee" />
                   </p>
                 </div>
               </Reveal>
@@ -421,19 +421,19 @@ export default async function Home() {
                 <div className="flex h-full flex-col rounded-[24px] border border-line bg-paper p-7 sm:p-10">
                   <div className="flex items-baseline justify-between gap-4">
                     <h3 className="font-display text-2xl font-medium">
-                      {content.plans.complete.name}
+                      <Text english={content.plans.complete.name} />
                     </h3>
                     <p className="text-right">
                       <span className="text-sm text-ink-soft line-through">
-                        {formatTaka(content.plans.complete.compareAt!)}
+                        <Text english={formatTaka(content.plans.complete.compareAt!)} />
                       </span>{" "}
                       <span className="font-display text-5xl font-medium text-pine">
-                        {formatTaka(content.plans.complete.price)}
+                        <Text english={formatTaka(content.plans.complete.price)} />
                       </span>
                     </p>
                   </div>
                   <p className="mt-2 text-sm text-ink-soft">
-                    {content.plans.complete.tagline}
+                    <Text english={content.plans.complete.tagline} />
                   </p>
                   <ul className="mt-7 space-y-3">
                     {content.plans.complete.features.map((f) => (
@@ -442,7 +442,7 @@ export default async function Home() {
                           className="mt-0.5 h-4 w-4 shrink-0 text-pine"
                           strokeWidth={3}
                         />
-                        {f}
+                        <Text english={f} />
                       </li>
                     ))}
                   </ul>
@@ -450,11 +450,11 @@ export default async function Home() {
                     href="/checkout?plan=complete"
                     className="group mt-9 inline-flex items-center justify-center gap-2 rounded-full border-2 border-ink px-6 py-[14px] text-base font-bold transition-all hover:bg-ink hover:text-paper active:scale-[0.98]"
                   >
-                    Get Toolkit + Masterclass
+                    <Text english="Get Toolkit + Masterclass" />
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                   <p className="mt-3 text-center text-xs text-ink-soft">
-                    Everything, plus the 3.5-hour masterclass
+                    <Text english="Everything, plus the 3.5-hour masterclass" />
                   </p>
                 </div>
               </Reveal>
@@ -467,9 +467,9 @@ export default async function Home() {
                   href="mailto:hello@studiostandard.co?subject=Studio%20license"
                   className="link-sweep font-semibold text-pine"
                 >
-                  Ask about studio licenses
+                  <Text english="Ask about studio licenses" />
                 </a>{" "}
-                · Prices in BDT, VAT calculated at checkout.
+                <Text english="· Prices in BDT, VAT calculated at checkout." />
               </p>
             </Reveal>
           </div>
@@ -481,20 +481,20 @@ export default async function Home() {
             <Reveal>
               <div className="lg:sticky lg:top-36">
                 <p className="text-xs font-bold tracking-[0.16em] text-pine uppercase">
-                  {content.pageCopy.faqEyebrow.en}
+                  <Text english={content.pageCopy.faqEyebrow.en} />
                 </p>
                 <h2 className="mt-3 font-display text-4xl font-medium tracking-tight sm:text-5xl">
-                  {content.pageCopy.faqTitle.en}
+                  <Text english={content.pageCopy.faqTitle.en} />
                 </h2>
                 <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-soft">
-                  Something else on your mind? Write to{" "}
+                  <Text english="Something else on your mind? Write to" />{" "}
                   <a
                     href="mailto:hello@studiostandard.co"
                     className="link-sweep font-semibold text-pine"
                   >
                     hello@studiostandard.co
                   </a>{" "}
-                  — a human replies within a day.
+                  <Text english="— a human replies within a day." />
                 </p>
               </div>
             </Reveal>
@@ -513,20 +513,20 @@ export default async function Home() {
           <div className="relative mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 sm:py-28">
             <Reveal>
               <h2 className="mx-auto max-w-3xl font-display text-4xl leading-tight font-medium tracking-tight text-balance sm:text-6xl">
-                {content.pageCopy.finalTitle.en}
+                <Text english={content.pageCopy.finalTitle.en} />
               </h2>
               <p className="mx-auto mt-5 max-w-xl text-base text-moss">
-                {content.pageCopy.finalDesc.en}
+                <Text english={content.pageCopy.finalDesc.en} />
               </p>
               <Link
                 href="/checkout?plan=standard"
                 className="group mt-9 inline-flex items-center gap-2 rounded-full bg-citron px-8 py-4 text-base font-bold text-ink transition-all hover:brightness-105 hover:shadow-2xl hover:shadow-citron/20 active:scale-[0.98]"
               >
-                {content.cta}
+                <Text english={content.cta} />
                 <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <p className="mt-4 text-xs text-moss/80">
-                One-time payment · Instant access · 30-day money-back guarantee
+                <Text english="One-time payment · Instant access · 30-day money-back guarantee" />
               </p>
             </Reveal>
           </div>
