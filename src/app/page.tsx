@@ -22,10 +22,11 @@ import SiteFooter from "@/components/SiteFooter";
 import Reveal from "@/components/Reveal";
 import Faq from "@/components/Faq";
 import BuyBar from "@/components/BuyBar";
-import { KIT_ITEMS, PLANS, TESTIMONIALS, formatUSD } from "@/lib/product";
+import { formatTaka } from "@/lib/product";
 import { getSiteContent } from "@/lib/site-content";
 import LocalizedHero from "@/components/LocalizedHero";
-import LanguageText from "@/components/LanguageText";
+import { TranslationMap } from "@/components/SiteTranslator";
+import { getContentTranslationMap } from "@/lib/site-content-shared";
 
 const ICONS: Record<string, LucideIcon> = {
   FileSignature,
@@ -36,24 +37,13 @@ const ICONS: Record<string, LucideIcon> = {
   PackageCheck,
 };
 
-const STUDIOS = [
-  "Pentagram alumni",
-  "ex-IDEO",
-  "Instrument",
-  "Collins",
-  "ex-Meta Design",
-  "Ueno",
-  "Basic/DEPT®",
-  "Wolff Olins",
-];
-
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const content = await getSiteContent();
   return (
     <>
-      <SiteNav brand={content.brand} />
+      <TranslationMap dictionary={getContentTranslationMap(content)} /><SiteNav brand={content.brand} announcement={content.announcement} mobileCta={content.cta} />
       <main>
         {/* ————— HERO ————— */}
         <section className="relative overflow-hidden pt-[132px] sm:pt-[148px]">
@@ -66,11 +56,11 @@ export default async function Home() {
               <Reveal>
                 <p className="inline-flex items-center gap-2 rounded-full border border-line bg-cream/70 px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] text-pine uppercase">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-pine" />
-                  For independent designers &amp; small studios
+                  {content.pageCopy.designers.en}
                 </p>
               </Reveal>
               <Reveal delay={80}>
-                <LocalizedHero headline={content.headline} description={content.description} cta={content.cta} headlineBn={content.headlineBn} descriptionBn={content.descriptionBn} ctaBn={content.ctaBn} />
+                <LocalizedHero headline={content.headline} description={content.description} />
               </Reveal>
               <Reveal delay={240}>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -78,14 +68,14 @@ export default async function Home() {
                     href="/checkout?plan=standard"
                     className="group inline-flex items-center justify-center gap-2 rounded-full bg-pine px-7 py-4 text-base font-semibold text-paper transition-all hover:bg-pine-deep hover:shadow-xl hover:shadow-pine/25 active:scale-[0.98]"
                   >
-                    <LanguageText english={content.cta} bangla={content.ctaBn} />
+                    {content.cta}
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                   <Link
                     href="/#inside"
                     className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 px-7 py-4 text-base font-semibold transition-colors hover:border-ink/40 hover:bg-cream/60"
                   >
-                    <LanguageText english="See what’s inside" bangla="ভেতরে কী আছে দেখুন" />
+                    See what’s inside
                   </Link>
                 </div>
               </Reveal>
@@ -135,7 +125,7 @@ export default async function Home() {
                   </p>
                   <p className="mt-0.5 inline-flex items-center gap-1.5 text-sm font-semibold">
                     <BadgeCheck className="h-4 w-4 text-pine" />
-                    Signed in 2 days — $12,400
+                    Signed in 2 days — ৳14,88,000
                   </p>
                 </div>
               </div>
@@ -146,7 +136,7 @@ export default async function Home() {
           <div className="border-y border-line bg-cream/50 py-4">
             <div className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
               <div className="flex w-max animate-marquee items-center gap-10 pr-10">
-                {[...STUDIOS, ...STUDIOS].map((s, i) => (
+                {[...content.pageCopy.studios.en.split("|"), ...content.pageCopy.studios.en.split("|")].map((s, i) => (
                   <span
                     key={i}
                     className="inline-flex items-center gap-10 text-sm font-semibold whitespace-nowrap text-ink-soft/70"
@@ -158,7 +148,7 @@ export default async function Home() {
               </div>
             </div>
             <p className="mt-2 text-center text-[11px] tracking-[0.16em] text-ink-soft/60 uppercase">
-              Used by designers from teams like these
+              {content.pageCopy.socialProof.en}
             </p>
           </div>
         </section>
@@ -167,10 +157,10 @@ export default async function Home() {
         <section className="bg-pine-deep text-paper">
           <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-4">
             {[
-              ["4,800+", "toolkits in the wild"],
-              ["12", "templates, zero fluff"],
-              ["6 hrs", "saved per project, avg."],
-              ["30 days", "money-back guarantee"],
+              ["4,800+", content.pageCopy.stats.en.split("|")[0]],
+              ["12", content.pageCopy.stats.en.split("|")[1]],
+              ["6 hrs", content.pageCopy.stats.en.split("|")[2]],
+              ["30 days", content.pageCopy.stats.en.split("|")[3]],
             ].map(([num, label], i) => (
               <Reveal key={label} delay={i * 80} className="px-2 py-4 sm:px-6">
                 <p className="font-display text-4xl font-medium text-citron sm:text-5xl">
@@ -189,21 +179,20 @@ export default async function Home() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <p className="text-xs font-bold tracking-[0.16em] text-pine uppercase">
-                    What&apos;s inside
+                    {content.pageCopy.insideEyebrow.en}
                   </p>
                   <h2 className="mt-3 max-w-xl font-display text-4xl font-medium tracking-tight text-balance sm:text-5xl">
-                    Every awkward conversation, already written.
+                    {content.pageCopy.insideTitle.en}
                   </h2>
                 </div>
                 <p className="max-w-xs text-sm leading-relaxed text-ink-soft">
-                  Six systems, twelve files. Each one exists because a project
-                  went sideways without it.
+                  {content.pageCopy.insideDesc.en}
                 </p>
               </div>
             </Reveal>
 
             <div className="mt-12 border-t border-line">
-              {KIT_ITEMS.map((item, i) => {
+              {content.kitItems.map((item, i) => {
                 const Icon = ICONS[item.icon];
                 return (
                   <Reveal key={item.n} delay={Math.min(i * 60, 240)}>
@@ -266,24 +255,17 @@ export default async function Home() {
             <div className="order-1 lg:order-2">
               <Reveal>
                 <p className="text-xs font-bold tracking-[0.16em] text-pine uppercase">
-                  Not another pretty PDF
+                  {content.pageCopy.previewEyebrow.en}
                 </p>
                 <h2 className="mt-3 font-display text-4xl font-medium tracking-tight text-balance sm:text-5xl">
-                  Written by someone who&apos;s been burned.
+                  {content.pageCopy.previewTitle.en}
                 </h2>
                 <p className="mt-5 max-w-lg text-base leading-relaxed text-ink-soft">
-                  Every clause, question and price anchor in this toolkit comes
-                  from a real project — including the ones that ended badly.
-                  That&apos;s the point.
+                  {content.pageCopy.previewDesc.en}
                 </p>
               </Reveal>
               <div className="mt-8 space-y-4">
-                {[
-                  "Plain-English contracts clients sign without a lawyer fight",
-                  "Three-tier proposals that raise your average deal size",
-                  "Scope language that turns “quick changes” into change orders",
-                  "Editable everywhere — Docs, Word, Notion and Figma",
-                ].map((line, i) => (
+                {content.pageCopy.previewBullets.en.split("|").map((line, i) => (
                   <Reveal key={line} delay={i * 80}>
                     <p className="flex items-start gap-3 text-[15px] font-medium">
                       <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-pine text-paper">
@@ -301,11 +283,10 @@ export default async function Home() {
                   </span>
                   <div>
                     <p className="text-sm font-semibold">
-                      Elena Kovač — creator, Form & Folio
+                      {content.pageCopy.creator.en}
                     </p>
                     <p className="text-xs leading-relaxed text-ink-soft">
-                      9 years independent · 140+ client projects · previously
-                      design lead at two agencies
+                      {content.pageCopy.creatorBio.en}
                     </p>
                   </div>
                 </div>
@@ -319,14 +300,14 @@ export default async function Home() {
           <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
             <Reveal>
               <p className="text-xs font-bold tracking-[0.16em] text-pine uppercase">
-                From the field
+                {content.pageCopy.reviewsEyebrow?.en ?? "From the field"}
               </p>
               <h2 className="mt-3 max-w-2xl font-display text-4xl font-medium tracking-tight text-balance sm:text-5xl">
-                Designers talk. Here&apos;s what they say.
+                {content.pageCopy.reviewsTitle.en}
               </h2>
             </Reveal>
             <div className="mt-12 grid gap-5 lg:grid-cols-[1.2fr_1fr]">
-              {TESTIMONIALS.filter((t) => t.featured).map((t) => (
+              {content.testimonials.filter((t) => t.featured).map((t) => (
                 <Reveal key={t.name}>
                   <figure className="flex h-full flex-col justify-between rounded-[20px] bg-pine-deep p-7 text-paper sm:p-10">
                     <div>
@@ -348,7 +329,7 @@ export default async function Home() {
                 </Reveal>
               ))}
               <div className="grid gap-5">
-                {TESTIMONIALS.filter((t) => !t.featured).map((t, i) => (
+                {content.testimonials.filter((t) => !t.featured).map((t, i) => (
                   <Reveal key={t.name} delay={100 + i * 100}>
                     <figure className="flex h-full flex-col justify-between rounded-[20px] border border-line bg-cream/50 p-6 transition-colors hover:bg-cream sm:p-7">
                       <blockquote className="text-[15px] leading-relaxed text-ink">
@@ -377,14 +358,13 @@ export default async function Home() {
             <Reveal>
               <div className="max-w-2xl">
                 <p className="text-xs font-bold tracking-[0.16em] text-pine uppercase">
-                  Pricing
+                  {content.pageCopy.pricingEyebrow.en}
                 </p>
                 <h2 className="mt-3 font-display text-4xl font-medium tracking-tight text-balance sm:text-5xl">
-                  Less than one hour of your rate.
+                  {content.pageCopy.pricingTitle.en}
                 </h2>
                 <p className="mt-4 text-base text-ink-soft">
-                  One payment. Yours forever. Every future update included —
-                  no subscriptions, ever.
+                  {content.pageCopy.pricingDesc.en}
                 </p>
               </div>
             </Reveal>
@@ -398,22 +378,22 @@ export default async function Home() {
                   </span>
                   <div className="flex items-baseline justify-between gap-4">
                     <h3 className="font-display text-2xl font-medium">
-                      {PLANS.standard.name}
+                      {content.plans.standard.name}
                     </h3>
                     <p className="text-right">
                       <span className="text-sm text-moss line-through">
-                        {formatUSD(PLANS.standard.compareAt!)}
+                        {formatTaka(content.plans.standard.compareAt!)}
                       </span>{" "}
                       <span className="font-display text-5xl font-medium text-citron">
-                        {formatUSD(PLANS.standard.price)}
+                        {formatTaka(content.plans.standard.price)}
                       </span>
                     </p>
                   </div>
                   <p className="mt-2 text-sm text-moss">
-                    {PLANS.standard.tagline}
+                    {content.plans.standard.tagline}
                   </p>
                   <ul className="mt-7 space-y-3">
-                    {PLANS.standard.features.map((f) => (
+                    {content.plans.standard.features.map((f) => (
                       <li key={f} className="flex items-start gap-3 text-sm">
                         <Check
                           className="mt-0.5 h-4 w-4 shrink-0 text-citron"
@@ -441,22 +421,22 @@ export default async function Home() {
                 <div className="flex h-full flex-col rounded-[24px] border border-line bg-paper p-7 sm:p-10">
                   <div className="flex items-baseline justify-between gap-4">
                     <h3 className="font-display text-2xl font-medium">
-                      {PLANS.complete.name}
+                      {content.plans.complete.name}
                     </h3>
                     <p className="text-right">
                       <span className="text-sm text-ink-soft line-through">
-                        {formatUSD(PLANS.complete.compareAt!)}
+                        {formatTaka(content.plans.complete.compareAt!)}
                       </span>{" "}
                       <span className="font-display text-5xl font-medium text-pine">
-                        {formatUSD(PLANS.complete.price)}
+                        {formatTaka(content.plans.complete.price)}
                       </span>
                     </p>
                   </div>
                   <p className="mt-2 text-sm text-ink-soft">
-                    {PLANS.complete.tagline}
+                    {content.plans.complete.tagline}
                   </p>
                   <ul className="mt-7 space-y-3">
-                    {PLANS.complete.features.map((f) => (
+                    {content.plans.complete.features.map((f) => (
                       <li key={f} className="flex items-start gap-3 text-sm">
                         <Check
                           className="mt-0.5 h-4 w-4 shrink-0 text-pine"
@@ -489,7 +469,7 @@ export default async function Home() {
                 >
                   Ask about studio licenses
                 </a>{" "}
-                · Prices in USD, VAT calculated at checkout.
+                · Prices in BDT, VAT calculated at checkout.
               </p>
             </Reveal>
           </div>
@@ -501,10 +481,10 @@ export default async function Home() {
             <Reveal>
               <div className="lg:sticky lg:top-36">
                 <p className="text-xs font-bold tracking-[0.16em] text-pine uppercase">
-                  Questions
+                  {content.pageCopy.faqEyebrow.en}
                 </p>
                 <h2 className="mt-3 font-display text-4xl font-medium tracking-tight sm:text-5xl">
-                  Asked, answered.
+                  {content.pageCopy.faqTitle.en}
                 </h2>
                 <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-soft">
                   Something else on your mind? Write to{" "}
@@ -519,7 +499,7 @@ export default async function Home() {
               </div>
             </Reveal>
             <Reveal delay={120}>
-              <Faq />
+              <Faq faqs={content.faqs} />
             </Reveal>
           </div>
         </section>
@@ -533,11 +513,10 @@ export default async function Home() {
           <div className="relative mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 sm:py-28">
             <Reveal>
               <h2 className="mx-auto max-w-3xl font-display text-4xl leading-tight font-medium tracking-tight text-balance sm:text-6xl">
-                Your next proposal could close at{" "}
-                <em className="text-citron italic">twice the price.</em>
+                {content.pageCopy.finalTitle.en}
               </h2>
               <p className="mx-auto mt-5 max-w-xl text-base text-moss">
-                Join 4,800+ designers who stopped winging the business side.
+                {content.pageCopy.finalDesc.en}
               </p>
               <Link
                 href="/checkout?plan=standard"
@@ -553,8 +532,8 @@ export default async function Home() {
           </div>
         </section>
       </main>
-      <SiteFooter brand={content.brand} />
-      <BuyBar />
+      <SiteFooter brand={content.brand} about={content.about} />
+      <BuyBar price={content.plans.standard.price} compareAt={content.plans.standard.compareAt} />
     </>
   );
 }

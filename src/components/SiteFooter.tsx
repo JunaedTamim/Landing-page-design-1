@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 
-export default function SiteFooter({ brand = "Form & Folio" }: { brand?: string }) {
+export default function SiteFooter({ brand = "Form & Folio", about = "The business toolkit for independent designers. Made by designers who got tired of learning the hard way." }: { brand?: string; about?: string }) {
   return (
     <footer className="border-t border-line bg-cream/60">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
@@ -11,8 +11,7 @@ export default function SiteFooter({ brand = "Form & Folio" }: { brand?: string 
               {brand}<span className="text-pine">.</span>
             </p>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-soft">
-              The business toolkit for independent designers. Made by designers
-              who got tired of learning the hard way.
+              {about}
             </p>
             <p className="mt-5 inline-flex items-center gap-2 rounded-full border border-line bg-paper px-3 py-1.5 text-xs font-medium text-ink-soft">
               <ShieldCheck className="h-3.5 w-3.5 text-pine" />

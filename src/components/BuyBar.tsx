@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { formatTaka } from "@/lib/product";
 
-export default function BuyBar() {
+export default function BuyBar({ price, compareAt }: { price: number; compareAt: number }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function BuyBar() {
         <div className="leading-tight">
           <p className="text-sm font-semibold text-paper">The Toolkit</p>
           <p className="text-xs text-moss">
-            <span className="line-through opacity-60">$129</span> $89 · one-time
+            <span className="line-through opacity-60">{formatTaka(compareAt)}</span> {formatTaka(price)} · one-time
           </p>
         </div>
         <Link

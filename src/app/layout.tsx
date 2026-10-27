@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import "@fontsource-variable/fraunces";
 import "@fontsource-variable/manrope";
 import "./globals.css";
+import SiteTranslator from "@/components/SiteTranslator";
 
 export const metadata: Metadata = {
   title: "Form & Folio — Contracts, proposals & pricing for designers",
@@ -19,7 +20,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className="grain bg-paper text-ink antialiased">{children}</body>
+      <body className="grain bg-paper text-ink antialiased"><SiteTranslator />{children}</body>
     </html>
   );
 }

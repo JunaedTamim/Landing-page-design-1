@@ -4,7 +4,7 @@ export interface Plan {
   id: PlanId;
   name: string;
   tagline: string;
-  price: number; // USD
+  price: number; // BDT
   compareAt?: number;
   features: string[];
 }
@@ -14,8 +14,8 @@ export const PLANS: Record<PlanId, Plan> = {
     id: "standard",
     name: "The Toolkit",
     tagline: "Every document you need to run client work.",
-    price: 89,
-    compareAt: 129,
+    price: 10900,
+    compareAt: 15900,
     features: [
       "12 battle-tested templates",
       "Client contract (designer-friendly, lawyer-reviewed)",
@@ -29,8 +29,8 @@ export const PLANS: Record<PlanId, Plan> = {
     id: "complete",
     name: "Toolkit + Masterclass",
     tagline: "The documents, plus how to actually use them.",
-    price: 149,
-    compareAt: 219,
+    price: 17900,
+    compareAt: 25900,
     features: [
       "Everything in The Toolkit",
       "3.5-hour video masterclass",
@@ -95,7 +95,7 @@ export const KIT_ITEMS = [
 export const TESTIMONIALS = [
   {
     quote:
-      "I raised my project minimum from $3k to $8k using the proposal system. The first client I sent it to picked the middle option without a single objection. It paid for itself forty times over on one project.",
+      "I raised my project minimum from ৳3,60,000 to ৳9,60,000 using the proposal system. The first client I sent it to picked the middle option without a single objection. It paid for itself forty times over on one project.",
     name: "Maya Okonkwo",
     role: "Brand designer, Lagos / London",
     initials: "MO",
@@ -146,6 +146,6 @@ export const FAQS = [
   },
 ];
 
-export function formatUSD(n: number): string {
-  return n % 1 === 0 ? `$${n}` : `$${n.toFixed(2)}`;
+export function formatTaka(n: number): string {
+  return `৳${new Intl.NumberFormat("en-BD", { maximumFractionDigits: 0 }).format(n)}`;
 }
