@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { orders } from "@/db/schema";
-import { COUPONS, PLANS, type PlanId } from "@/lib/product";
+import { COUPONS, type PlanId } from "@/lib/product";
+import { getSiteContent } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
 
@@ -37,25 +38,26 @@ export async function POST(request: Request) {
   if (fullName.length < 2) {
     return NextResponse.json({ error: "Please enter your full name." }, { status: 422 });
   }
-  if (!PLANS[planId]) {
+  const siteContent = await getSiteContent();
+  if (!siteContent.plans[planId]) {
     return NextResponse.json({ error: "Unknown plan." }, { status: 422 });
   }
   if (couponCode && !(couponCode in COUPONS)) {
     return NextResponse.json({ error: "Invalid coupon code." }, { status: 422 });
   }
 
-  const plan = PLANS[planId];
+  const plan = siteContent.plans[planId];
   const discount = couponCode ? plan.price * COUPONS[couponCode] : 0;
   const subtotal = plan.price - discount;
   const vat = VAT_COUNTRIES.has(country) ? subtotal * 0.2 : 0;
-  const amountCents = Math.round((subtotal + vat) * 100);
+  const amountSubunits = Math.round((subtotal + vat) * 100);
 
   if (!process.env.DATABASE_URL) {
     const demoId = Math.random().toString(36).slice(2, 10).toUpperCase();
     return NextResponse.json({
       ok: true,
       reference: `SS-${demoId}`,
-      amountCents,
+      amountSubunits,
     });
   }
 
@@ -68,7 +70,7 @@ export async function POST(request: Request) {
         plan: planId,
         coupon: couponCode,
         country,
-        amountCents,
+        amountCents: amountSubunits,
         status: "paid",
       })
       .returning({ id: orders.id });
@@ -76,7 +78,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       ok: true,
       reference: `SS-${order.id.slice(0, 8).toUpperCase()}`,
-      amountCents,
+      amountSubunits,
     });
   } catch (err) {
     console.error("Checkout insert failed:", err);

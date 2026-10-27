@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import {
   ArrowLeft,
   BadgeCheck,
@@ -19,7 +19,10 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { COUPONS, PLANS, formatUSD, type PlanId } from "@/lib/product";
+import { COUPONS, formatTaka, type PlanId } from "@/lib/product";
+import { DEFAULT_CONTENT } from "@/lib/site-content-shared";
+import AppearanceControls from "@/components/AppearanceControls";
+import type { SiteContent } from "@/lib/site-content-shared";
 
 const VAT_COUNTRIES = new Set([
   "GB", "DE", "FR", "NL", "ES", "IT", "PT", "IE", "BE", "AT", "SE", "PL",
@@ -46,7 +49,7 @@ const COUNTRIES: [string, string][] = [
 ];
 
 function money(cents: number) {
-  return `$${(cents / 100).toFixed(2).replace(/\.00$/, "")}`;
+  return `৳${new Intl.NumberFormat("en-BD", { maximumFractionDigits: 0 }).format(cents / 100)}`;
 }
 
 type Errors = Partial<
@@ -59,6 +62,9 @@ export default function CheckoutClient() {
     params.get("plan") === "complete" ? "complete" : "standard";
 
   const [plan, setPlan] = useState<PlanId>(initialPlan);
+  const [plans, setPlans] = useState<SiteContent["plans"]>(DEFAULT_CONTENT.plans);
+  // Load published plan details so checkout prices always match the CMS.
+  useEffect(() => { void fetch("/api/site-content", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((data: { plans?: SiteContent["plans"] } | null) => { if (data?.plans) setPlans(data.plans); }).catch(() => undefined); }, []);
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [country, setCountry] = useState("US");
@@ -75,12 +81,12 @@ export default function CheckoutClient() {
   const [done, setDone] = useState<{ reference: string } | null>(null);
 
   const totals = useMemo(() => {
-    const base = PLANS[plan].price * 100;
+    const base = plans[plan].price * 100;
     const discount = coupon ? Math.round(base * COUPONS[coupon]) : 0;
     const subtotal = base - discount;
     const vat = VAT_COUNTRIES.has(country) ? Math.round(subtotal * 0.2) : 0;
     return { base, discount, subtotal, vat, total: subtotal + vat };
-  }, [plan, coupon, country]);
+  }, [plan, coupon, country, plans]);
 
   function formatCard(v: string) {
     return v
@@ -171,7 +177,7 @@ export default function CheckoutClient() {
       `Reference: ${done.reference}`,
       `Name: ${fullName}`,
       `Email: ${email}`,
-      `Product: ${PLANS[plan].name}`,
+      `Product: ${plans[plan].name}`,
       coupon ? `Coupon: ${coupon}` : null,
       `Total paid: ${money(totals.total)}`,
       "",
@@ -183,6 +189,7 @@ export default function CheckoutClient() {
 
     return (
       <main className="flex min-h-screen items-center justify-center px-4 py-16">
+        <div className="fixed top-5 right-5 z-50"><AppearanceControls /></div>
         <div className="w-full max-w-lg text-center">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-pine shadow-xl shadow-pine/30">
             <Check className="h-9 w-9 text-citron" strokeWidth={3} />
@@ -200,7 +207,7 @@ export default function CheckoutClient() {
           </p>
           <div className="mt-8 rounded-2xl border border-line bg-cream/60 p-5 text-left">
             <div className="flex items-center justify-between text-sm">
-              <span className="font-semibold">{PLANS[plan].name}</span>
+              <span className="font-semibold">{plans[plan].name}</span>
               <span className="font-semibold">{money(totals.total)}</span>
             </div>
             {coupon && (
@@ -244,7 +251,7 @@ export default function CheckoutClient() {
     <main className="min-h-screen pb-16">
       {/* header */}
       <header className="border-b border-line bg-paper/90 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
+        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-3 px-4 sm:px-6">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm font-medium text-ink-soft transition-colors hover:text-ink"
@@ -254,11 +261,11 @@ export default function CheckoutClient() {
           <Link href="/" className="font-display text-lg font-semibold">
             Form & Folio<span className="text-pine">.</span>
           </Link>
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-pine">
+          <div className="flex items-center gap-3"><AppearanceControls /><span className="inline-flex items-center gap-1.5 text-xs font-semibold text-pine">
             <Lock className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Secure checkout</span>
             <span className="sm:hidden">Secure</span>
-          </span>
+          </span></div>
         </div>
       </header>
 
@@ -288,6 +295,7 @@ export default function CheckoutClient() {
           {summaryOpen && (
             <div className="border-t border-line px-4 py-4">
               <SummaryLines
+                plans={plans}
                 plan={plan}
                 coupon={coupon}
                 totals={totals}
@@ -306,8 +314,8 @@ export default function CheckoutClient() {
                 1 · Your edition
               </legend>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                {(Object.keys(PLANS) as PlanId[]).map((id) => {
-                  const p = PLANS[id];
+                {(Object.keys(plans) as PlanId[]).map((id) => {
+                  const p = plans[id];
                   const active = plan === id;
                   return (
                     <button
@@ -335,9 +343,9 @@ export default function CheckoutClient() {
                         {p.tagline}
                       </p>
                       <p className="mt-3 font-display text-2xl font-medium text-pine">
-                        {formatUSD(p.price)}
+                        {formatTaka(p.price)}
                         <span className="ml-2 align-middle text-xs font-sans text-ink-soft line-through">
-                          {formatUSD(p.compareAt!)}
+                          {formatTaka(p.compareAt!)}
                         </span>
                       </p>
                     </button>
@@ -598,7 +606,7 @@ export default function CheckoutClient() {
                   SS
                 </span>
                 <div>
-                  <p className="text-sm font-bold">{PLANS[plan].name}</p>
+                  <p className="text-sm font-bold">{plans[plan].name}</p>
                   <p className="text-xs text-ink-soft">
                     Digital download · v3.2 · lifetime updates
                   </p>
@@ -606,6 +614,7 @@ export default function CheckoutClient() {
               </div>
               <div className="mt-5">
                 <SummaryLines
+                  plans={plans}
                   plan={plan}
                   coupon={coupon}
                   totals={totals}
@@ -626,11 +635,13 @@ export default function CheckoutClient() {
 }
 
 function SummaryLines({
+  plans,
   plan,
   coupon,
   totals,
   onRemoveCoupon,
 }: {
+  plans: SiteContent["plans"];
   plan: PlanId;
   coupon: string | null;
   totals: { base: number; discount: number; vat: number; total: number };
@@ -639,7 +650,7 @@ function SummaryLines({
   return (
     <dl className="space-y-2.5 text-sm">
       <div className="flex justify-between">
-        <dt className="text-ink-soft">{PLANS[plan].name}</dt>
+        <dt className="text-ink-soft">{plans[plan].name}</dt>
         <dd className="font-medium">{money(totals.base)}</dd>
       </div>
       {coupon && (
@@ -661,7 +672,7 @@ function SummaryLines({
       <div className="flex justify-between">
         <dt className="text-ink-soft">VAT {totals.vat > 0 ? "(20%)" : ""}</dt>
         <dd className="font-medium">
-          {totals.vat > 0 ? money(totals.vat) : "$0"}
+          {totals.vat > 0 ? money(totals.vat) : "৳0"}
         </dd>
       </div>
       <div className="flex justify-between border-t border-line pt-3">

@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { FAQS } from "@/lib/product";
 
-export default function Faq() {
+
+export default function Faq({ faqs }: { faqs: Array<{ q: string; a: string; qBn: string; aBn: string }> }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <div className="divide-y divide-line border-y border-line">
-      {FAQS.map((f, i) => {
+      {faqs.map((f, i) => {
         const open = openIndex === i;
         return (
           <div key={f.q}>
