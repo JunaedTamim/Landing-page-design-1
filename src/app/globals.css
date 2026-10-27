@@ -11,6 +11,8 @@
   --color-citron: #dcec7a;
   --color-line: #d9d7cb;
 
+  --font-fraunces: "Fraunces Variable";
+  --font-manrope: "Manrope Variable";
   --font-display: var(--font-fraunces), Georgia, serif;
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
 
